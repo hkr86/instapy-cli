@@ -29,7 +29,7 @@ class Media(object):
         self.check_type()
     
     def check_type(self):
-        self.media_ext = filetype.guess(self.media_path).extension
+        self.media_ext = 'mp4' #filetype.guess(self.media_path).extension
     
     def is_image(self):
         return True if self.media_ext in ['jpg', 'png', 'gif'] else False
@@ -37,15 +37,15 @@ class Media(object):
     def is_video(self):
         return True if self.media_ext in ['mp4', 'mov', 'avi'] else False
 
-    def prepare(self, story=False):
+    def prepare(self, story=False, **kwargs):
         ratio = MediaRatios.reel if story else MediaRatios.standard
         size = (1080, 1920) if story else (1080, 1350)
         # print('ratio is: ', ratio)
         if self.is_image():
-            return IGMedia.prepare_image(self.media_path, max_size=size, aspect_ratios=ratio)
+            return IGMedia.prepare_image(self.media_path, max_size=size, aspect_ratios=ratio, **kwargs)
         elif self.is_video():
             max_time = 15.0 if story else 60.0
-            return IGMedia.prepare_video(self.media_path, max_size=size, aspect_ratios=ratio, max_duration=max_time)
+            return IGMedia.prepare_video(self.media_path, max_size=size, aspect_ratios=ratio, max_duration=max_time, **kwargs)
 
     def isDownloaded(self):
         return self.isLink
