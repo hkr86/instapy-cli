@@ -111,7 +111,7 @@ class InstapyCli(object):
             return codecs.decode(json_object['__value__'].encode(), 'base64')
         return json_object
 
-    def upload(self, file, caption='', story=False):
+    def upload(self, file, caption='', story=False, **kwargs):
         upload_completed = True
         media = Media(file)
 
@@ -119,14 +119,14 @@ class InstapyCli(object):
         try:
 
             if media.is_image():
-                image_data, image_size = media.prepare(story)
+                image_data, image_size = media.prepare(story, **kwargs)
                 # print('image size: {} with ratio of: {}'.format(image_size, image_size[0]/image_size[1]))
                 if story:
                     res = self.client.post_photo_story(image_data, image_size)
                 else:
                     res = self.client.post_photo(image_data, image_size, caption=caption)
             elif media.is_video():
-                video_data, video_size, video_duration, video_thumbnail = media.prepare(story)
+                video_data, video_size, video_duration, video_thumbnail = media.prepare(story, **kwargs)
                 if story:
                     res = self.client.post_video_story(video_data, video_size, video_duration, video_thumbnail)
                 else:
