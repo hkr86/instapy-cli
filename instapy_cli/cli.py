@@ -138,6 +138,7 @@ class InstapyCli(object):
 
 
         except Exception as e:
+            raise
             print('Error is >>\n    ' + str(e))
             print('\nSomething went bad.\nPlease retry or send an issue on https://github.com/b3nab/instapy-cli\n')
             upload_completed = False
